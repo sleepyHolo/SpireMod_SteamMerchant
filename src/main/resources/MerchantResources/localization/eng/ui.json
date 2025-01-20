@@ -1,0 +1,28 @@
+{
+  "Shop Misc": {
+    "TEXT": [
+      "Business As Usual",
+      "Spire Spring Sale",
+      "Spire Summer Sale",
+      "Spire Autumn Sale",
+      "Spire Winter Sale",
+      "next sale",
+      "sale ends",
+      "Remove a card from your deck.",
+      "Upgrade a card from your deck.",
+      "A Card",
+      "Card Removal Service",
+      "Card Upgrade Service",
+      "Card Reward",
+      "#yRemove a card from your deck. ",
+      "#yUpgrade a card from your deck. ",
+      "Get a Reward of card.",
+      "The cost of #yremoval #yand #yupgrade #yservice increases by #b",
+      "In this shop room, the cost of this service increases by #b",
+      " for the rest of this run.",
+      "Neow's Delivery",
+      "#yRenew all of cards and potions in this shop. With the help of Neow.",
+      " ."
+    ]
+  }
+}

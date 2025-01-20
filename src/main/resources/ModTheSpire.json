@@ -1,0 +1,14 @@
+{
+  "modid": "SteamMerchant",
+  "name": "SteamMerchant",
+  "author_list": ["__name__"],
+  "description": "商人向G胖拜师学艺...？尖塔的商店也有限时特卖活动啦，同时商品打折力度进一步加大！",
+  "version": "0.1.0",
+  "sts_version": "01-23-2019",
+  "mts_version": "3.7.0",
+  "dependencies": ["basemod"],
+  "optional_dependencies": [],
+  "credits": "",
+  "update_json": ""
+}
+

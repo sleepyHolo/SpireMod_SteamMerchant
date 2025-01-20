@@ -34,7 +34,7 @@ public class StorePotion extends AbstractGoods{
         if (this.sub_potion != null) {
             this.hasSubPotion = true;
             tempPrice += this.sub_potion.getPrice();
-            // 遗物组合套件打折20%
+            // 药水组合套件打折20%
             tempPrice *= 0.8F;
         }
         if (AbstractDungeon.ascensionLevel >= 16) {
@@ -74,7 +74,7 @@ public class StorePotion extends AbstractGoods{
             this.y = rugY + NewShopScreen.BOTTOM_ROW_Y - NewShopScreen.HALF_ROW;
             this.hb.move(this.x, this.y);
             this.hb.update();
-            // 遗物hb
+            // 药水hb
             if (!this.hasSubPotion) {
                 this.potion.posX = this.x;
                 this.potion.posY = this.y;

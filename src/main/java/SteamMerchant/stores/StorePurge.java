@@ -13,6 +13,7 @@ import com.megacrit.cardcrawl.helpers.TipHelper;
 import com.megacrit.cardcrawl.helpers.controller.CInputActionSet;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.shop.ShopScreen;
+import com.megacrit.cardcrawl.vfx.cardManip.PurgeCardEffect;
 
 public class StorePurge extends AbstractGoods{
     private static final float CARD_GOLD_OFFSET_X;
@@ -23,6 +24,7 @@ public class StorePurge extends AbstractGoods{
     private float y;
     private float scale;
     private final Hitbox hb;
+    private boolean active;
 
     public StorePurge(int slot, int serviceDiscountIndex, int basePrice) {
         super(slot, serviceDiscountIndex);
@@ -33,6 +35,7 @@ public class StorePurge extends AbstractGoods{
         this.gold_offset_y = CARD_GOLD_OFFSET_Y;
         this.price_offset_x = CARD_PRICE_OFFSET_X;
         this.price_offset_y = CARD_PRICE_OFFSET_Y;
+        this.active = false;
     }
 
     public void update(float rugY) {
@@ -76,6 +79,25 @@ public class StorePurge extends AbstractGoods{
             }
         }
 
+        // 必须写在update里面
+        if (this.active && !AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()) {
+            for (AbstractCard c: AbstractDungeon.gridSelectScreen.selectedCards) {
+                AbstractDungeon.topLevelEffects.add(new PurgeCardEffect(c,
+                        (float) (Settings.WIDTH / 2), (float) (Settings.HEIGHT / 2)));
+                AbstractDungeon.player.masterDeck.removeCard(c);
+            }
+            AbstractDungeon.gridSelectScreen.selectedCards.clear();
+            AbstractDungeon.player.loseGold(this.price);
+            // 服务价格上涨
+            SteamShopRoom.shopScreen.serviceCostUp(15);
+            this.isPurchased = true;
+            this.active = false;
+        }
+        // 为了防止和Upgrade相互干扰所以检查AbstractDungeon.previousScreen,如果为null说明结束选择卡牌
+        if (this.active && AbstractDungeon.previousScreen == null) {
+            this.active = false;
+        }
+
     }
 
     public void purchase() {
@@ -87,13 +109,7 @@ public class StorePurge extends AbstractGoods{
             AbstractDungeon.gridSelectScreen.open(CardGroup.getGroupWithoutBottledCards(
                     AbstractDungeon.player.masterDeck.getPurgeableCards()), 1,
                     NewShopScreen.uiStrings.TEXT[7], false, false, true, true);
-            if (!AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()) {
-                AbstractDungeon.player.loseGold(this.price);
-                AbstractDungeon.player.masterDeck.removeCard(AbstractDungeon.gridSelectScreen.selectedCards.get(0));
-                // 服务价格上涨
-                SteamShopRoom.shopScreen.serviceCostUp(15);
-                this.isPurchased = true;
-            }
+            this.active = true;
         } else {
             SteamShopRoom.shopScreen.speechTimer = MathUtils.random(40.0F, 60.0F);
             SteamShopRoom.shopScreen.playCantBuySfx();

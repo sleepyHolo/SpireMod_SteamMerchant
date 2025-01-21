@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.Hitbox;
@@ -84,15 +83,18 @@ public class StorePurge extends AbstractGoods{
             return;
         }
         if (AbstractDungeon.player.gold >= this.price) {
-            AbstractDungeon.player.loseGold(this.price);
-            CardCrawlGame.sound.play("SHOP_PURCHASE", 0.1F);
+            // 标记玩家卡组数量,用于检查是否玩家使用了服务
+            int deck_size = AbstractDungeon.player.masterDeck.size();
             AbstractDungeon.previousScreen = AbstractDungeon.CurrentScreen.SHOP;
             AbstractDungeon.gridSelectScreen.open(CardGroup.getGroupWithoutBottledCards(
                     AbstractDungeon.player.masterDeck.getPurgeableCards()), 1,
                     NewShopScreen.uiStrings.TEXT[7], false, false, true, true);
-            // 服务价格上涨
-            SteamShopRoom.shopScreen.serviceCostUp(15);
-            this.isPurchased = true;
+            if (deck_size != AbstractDungeon.player.masterDeck.size()) {
+                AbstractDungeon.player.loseGold(this.price);
+                // 服务价格上涨
+                SteamShopRoom.shopScreen.serviceCostUp(15);
+                this.isPurchased = true;
+            }
         } else {
             SteamShopRoom.shopScreen.speechTimer = MathUtils.random(40.0F, 60.0F);
             SteamShopRoom.shopScreen.playCantBuySfx();

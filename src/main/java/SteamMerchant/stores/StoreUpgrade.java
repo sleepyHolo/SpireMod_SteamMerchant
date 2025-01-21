@@ -87,8 +87,7 @@ public class StoreUpgrade extends AbstractGoods{
             AbstractDungeon.player.loseGold(this.price);
             CardCrawlGame.sound.play("SHOP_PURCHASE", 0.1F);
             AbstractDungeon.previousScreen = AbstractDungeon.CurrentScreen.SHOP;
-            AbstractDungeon.gridSelectScreen.open(CardGroup.getGroupWithoutBottledCards(
-                            AbstractDungeon.player.masterDeck.getPurgeableCards()), 1,
+            AbstractDungeon.gridSelectScreen.open(AbstractDungeon.player.masterDeck.getUpgradableCards(), 1,
                     NewShopScreen.uiStrings.TEXT[8], true, false, true, false);
             // 服务价格上涨
             SteamShopRoom.shopScreen.serviceCostUp(15);
